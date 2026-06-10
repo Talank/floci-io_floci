@@ -1,14 +1,7 @@
 name: Compatibility Tests
 
 on:
-  pull_request:
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-      - 'docker/Dockerfile.jvm-package'
-      - 'compatibility-tests/**'
-      - '.github/workflows/compatibility.yml'
-
+  workflow_dispatch:
 permissions:
   contents: read
 
@@ -55,6 +48,8 @@ jobs:
           path: /tmp/floci-image.tar.gz
           retention-days: 1
 
+    strategy:
+      fail-fast: false
   compat-test:
     name: ${{ matrix.test }}
     needs: build

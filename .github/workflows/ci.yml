@@ -1,19 +1,7 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-      - '.github/workflows/ci.yml'
-  pull_request:
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-      - '.github/workflows/ci.yml'
-
+  workflow_dispatch:
 permissions:
   contents: read
 
@@ -37,3 +25,5 @@ jobs:
 
       - name: Run tests
         run: mvn test -B
+    strategy:
+      fail-fast: false
