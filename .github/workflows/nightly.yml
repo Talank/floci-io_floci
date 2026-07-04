@@ -11,10 +11,7 @@ name: Nightly
 # Required secrets: DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, AWS_ROLE_ARN
 
 on:
-  schedule:
-    - cron: '0 4 * * *'   # 23:00 CT (CDT/UTC-5); shifts to 23:00 CST in winter
-  workflow_dispatch:        # Allow maintainers to trigger manually
-
+  workflow_dispatch:
 permissions:
   contents: read
   id-token: write
@@ -40,7 +37,7 @@ jobs:
   build-native-amd64:
     name: Build native artifact (amd64)
     needs: prepare
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 45
 
     steps:
@@ -72,6 +69,12 @@ jobs:
           retention-days: 1
 
   # ── Build native artifact — arm64 ────────────────────────────────────────
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+      fail-fast: false
   build-native-arm64:
     name: Build native artifact (arm64)
     needs: prepare
